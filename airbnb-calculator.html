@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HPH Airbnb Profit Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .calculator {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .section {
+            border: 2px solid #34495e;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .section-header {
+            background-color: #5f9ea0;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .section-content {
+            padding: 0;
+        }
+        .row {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+        .row:last-child {
+            border-bottom: none;
+        }
+        .label {
+            flex: 1;
+            padding: 8px 10px;
+            background-color: #ecf0f1;
+            border-right: 1px solid #ddd;
+            font-size: 12px;
+        }
+        .value {
+            width: 100px;
+            padding: 8px 10px;
+            text-align: right;
+            font-size: 12px;
+            background-color: white;
+        }
+        .total-row .label {
+            background-color: #bdc3c7;
+            font-weight: bold;
+        }
+        .total-row .value {
+            background-color: #ecf0f1;
+            font-weight: bold;
+        }
+        input.value {
+            border: none;
+            outline: none;
+            width: 100px;
+            text-align: right;
+        }
+        input.value:focus {
+            background-color: #fff3cd;
+        }
+        .notes {
+            grid-column: 1;
+            grid-row: span 2;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+        .notes h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .notes p {
+            margin: 8px 0;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .summary {
+            grid-column: 4;
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+        }
+        .summary .section-header {
+            background-color: #28a745;
+        }
+        .calculated {
+            background-color: #e3f2fd !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>HPH Airbnb Profit Calculator</h1>
+        
+        <div class="container">
+            <!-- Start Up Costs -->
+            <div class="section">
+                <div class="section-header">Start Up Costs</div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="label">Security Deposit</div>
+                        <div class="value">$<input type="number" id="security-deposit" value="5700" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">First Months Rent</div>
+                        <div class="value">$<input type="number" id="first-rent" value="5700" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Furniture</div>
+                        <div class="value">$<input type="number" id="furniture" value="18000" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Appliances</div>
+                        <div class="value">$<input type="number" id="appliances" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Patio</div>
+                        <div class="value">$<input type="number" id="patio" value="2000" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Misc 3</div>
+                        <div class="value">$<input type="number" id="misc3" value="5000" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Misc 4</div>
+                        <div class="value">$<input type="number" id="misc4" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Misc 5</div>
+                        <div class="value">$<input type="number" id="misc5" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row total-row">
+                        <div class="label">Total</div>
+                        <div class="value calculated">$<span id="total-startup">36,400</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Operating Costs -->
+            <div class="section">
+                <div class="section-header">Monthly Operating Costs</div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="label">Rent</div>
+                        <div class="value">$<input type="number" id="monthly-rent" value="5700" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Utilities (~$600/mo)</div>
+                        <div class="value">$<input type="number" id="utilities" value="750" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Internet, Cable, etc.</div>
+                        <div class="value">$<input type="number" id="internet" value="50" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Parking</div>
+                        <div class="value">$<input type="number" id="parking-monthly" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Insurance (~$120/mo)</div>
+                        <div class="value">$<input type="number" id="insurance" value="140" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Software</div>
+                        <div class="value">$<input type="number" id="software-monthly" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Landscape/Pool</div>
+                        <div class="value">$<input type="number" id="landscape-monthly" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Misc 1</div>
+                        <div class="value">$<input type="number" id="misc1-monthly" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row total-row">
+                        <div class="label">Total Monthly Operating Costs</div>
+                        <div class="value calculated">$<span id="total-monthly-operating">6,640</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Annual Operating Costs -->
+            <div class="section">
+                <div class="section-header">Annual Operating Costs</div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="label">Rent</div>
+                        <div class="value calculated">$<span id="annual-rent">68,400</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Utilities (~$600/mo)</div>
+                        <div class="value calculated">$<span id="annual-utilities">9,000</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Internet, Cable, etc.</div>
+                        <div class="value calculated">$<span id="annual-internet">600</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Parking</div>
+                        <div class="value calculated">$<span id="annual-parking">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Insurance (~$120/mo)</div>
+                        <div class="value calculated">$<span id="annual-insurance">1,680</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Software</div>
+                        <div class="value calculated">$<span id="annual-software">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Landscape/Pool</div>
+                        <div class="value calculated">$<span id="annual-landscape">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Misc 1</div>
+                        <div class="value calculated">$<span id="annual-misc1">0</span></div>
+                    </div>
+                    <div class="row total-row">
+                        <div class="label">Total Annual Operating Costs</div>
+                        <div class="value calculated">$<span id="total-annual-operating">79,680</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Summary -->
+            <div class="section summary">
+                <div class="section-header">Financial Summary</div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="label">Number of Months until Break Even</div>
+                        <div class="value calculated"><span id="break-even-months">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Monthly Profit</div>
+                        <div class="value calculated">$<span id="monthly-profit">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">First Year Net Profit</div>
+                        <div class="value calculated">$<span id="first-year-profit">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Profit Per Year</div>
+                        <div class="value calculated">$<span id="annual-profit">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Buyer Rating</div>
+                        <div class="value calculated"><span id="buyer-rating">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Notes Section -->
+            <div class="notes">
+                <h3>Approximating Costs</h3>
+                <p><strong>Furnishing 2 bedroom ~</strong> $10-12k</p>
+                <p><strong>Each Additional Bedroom ~</strong> $2-4k</p>
+                <p><strong>Washer/Dryer/Fridge ~</strong> $2k</p>
+                <p><strong>Patio ~</strong> $1.5-2k</p>
+                <br>
+                <h3>Your Cleaning Cost:</h3>
+                <p><strong>2 bedroom ~</strong> $120-140</p>
+                <p><strong>3 bedroom ~</strong> $160-180</p>
+                <p><strong>4 bedroom ~</strong> $180-200</p>
+                <p><strong>5 bedroom ~</strong> $200-225</p>
+            </div>
+
+            <!-- Monthly Recurring Costs -->
+            <div class="section">
+                <div class="section-header">Recurring Costs</div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="label">Cleaning (Your Cost)</div>
+                        <div class="value">$<input type="number" id="cleaning-cost" value="200" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Consumables</div>
+                        <div class="value">$<input type="number" id="consumables" value="15" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Per Stay Misc 1</div>
+                        <div class="value">$<input type="number" id="per-stay-misc1" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Per Stay Misc 2</div>
+                        <div class="value">$<input type="number" id="per-stay-misc2" value="0" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row total-row">
+                        <div class="label">Total Recurring Costs</div>
+                        <div class="value calculated">$<span id="total-recurring">215</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Annual Recurring Costs -->
+            <div class="section">
+                <div class="section-header">Recurring Costs</div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="label">Cleaning (Your Cost)</div>
+                        <div class="value calculated">$<span id="annual-cleaning">2,400</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Consumables</div>
+                        <div class="value calculated">$<span id="annual-consumables">180</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Per Stay Misc 1</div>
+                        <div class="value calculated">$<span id="annual-per-stay-misc1">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Per Stay Misc 2</div>
+                        <div class="value calculated">$<span id="annual-per-stay-misc2">0</span></div>
+                    </div>
+                    <div class="row total-row">
+                        <div class="label">Total Annual Recurring Costs</div>
+                        <div class="value calculated">$<span id="total-annual-recurring">2,580</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Assumptions (Monthly) -->
+            <div class="section">
+                <div class="section-header">Revenue Assumptions</div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="label">Avg days rented per month</div>
+                        <div class="value"><input type="number" id="days-rented" value="28" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Avg Nights per Stay</div>
+                        <div class="value"><input type="number" id="nights-per-stay" value="3" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Airbnb Hosting Fee (3%)</div>
+                        <div class="value"><input type="number" step="0.01" id="hosting-fee" value="3.00" class="value" oninput="calculate()">%</div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Cleaning Fee Charged/Stay</div>
+                        <div class="value">$<input type="number" id="cleaning-fee-charged" value="250" class="value" oninput="calculate()"></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">ADR</div>
+                        <div class="value">$<input type="number" id="adr" value="400" class="value" oninput="calculate()"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Assumptions (Annual) -->
+            <div class="section">
+                <div class="section-header">Revenue Assumptions</div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="label">Avg days rented</div>
+                        <div class="value calculated"><span id="annual-days-rented">336</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Avg Nights per Stay</div>
+                        <div class="value calculated"><span id="annual-nights-per-stay">3</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Airbnb Hosting Fee</div>
+                        <div class="value calculated"><span id="annual-hosting-fee">3.00</span>%</div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Cleaning Fee Charged/Stay</div>
+                        <div class="value calculated">$<span id="annual-cleaning-fee-charged">250</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">ADR</div>
+                        <div class="value calculated">$<span id="annual-adr">400</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString();
+        }
+
+        function calculate() {
+            // Get all input values
+            const securityDeposit = parseFloat(document.getElementById('security-deposit').value) || 0;
+            const firstRent = parseFloat(document.getElementById('first-rent').value) || 0;
+            const furniture = parseFloat(document.getElementById('furniture').value) || 0;
+            const appliances = parseFloat(document.getElementById('appliances').value) || 0;
+            const patio = parseFloat(document.getElementById('patio').value) || 0;
+            const misc3 = parseFloat(document.getElementById('misc3').value) || 0;
+            const misc4 = parseFloat(document.getElementById('misc4').value) || 0;
+            const misc5 = parseFloat(document.getElementById('misc5').value) || 0;
+
+            const monthlyRent = parseFloat(document.getElementById('monthly-rent').value) || 0;
+            const utilities = parseFloat(document.getElementById('utilities').value) || 0;
+            const internet = parseFloat(document.getElementById('internet').value) || 0;
+            const parkingMonthly = parseFloat(document.getElementById('parking-monthly').value) || 0;
+            const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+            const softwareMonthly = parseFloat(document.getElementById('software-monthly').value) || 0;
+            const landscapeMonthly = parseFloat(document.getElementById('landscape-monthly').value) || 0;
+            const misc1Monthly = parseFloat(document.getElementById('misc1-monthly').value) || 0;
+
+            const cleaningCost = parseFloat(document.getElementById('cleaning-cost').value) || 0;
+            const consumables = parseFloat(document.getElementById('consumables').value) || 0;
+            const perStayMisc1 = parseFloat(document.getElementById('per-stay-misc1').value) || 0;
+            const perStayMisc2 = parseFloat(document.getElementById('per-stay-misc2').value) || 0;
+
+            const daysRented = parseFloat(document.getElementById('days-rented').value) || 0;
+            const nightsPerStay = parseFloat(document.getElementById('nights-per-stay').value) || 1;
+            const hostingFee = parseFloat(document.getElementById('hosting-fee').value) || 0;
+            const cleaningFeeCharged = parseFloat(document.getElementById('cleaning-fee-charged').value) || 0;
+            const adr = parseFloat(document.getElementById('adr').value) || 0;
+
+            // Calculate totals
+            const totalStartup = securityDeposit + firstRent + furniture + appliances + patio + misc3 + misc4 + misc5;
+            const totalMonthlyOperating = monthlyRent + utilities + internet + parkingMonthly + insurance + softwareMonthly + landscapeMonthly + misc1Monthly;
+            const totalAnnualOperating = totalMonthlyOperating * 12;
+
+            // Calculate revenue
+            const staysPerMonth = daysRented / nightsPerStay;
+            const monthlyRoomRevenue = daysRented * adr;
+            const monthlyCleaningRevenue = staysPerMonth * cleaningFeeCharged;
+            const totalMonthlyRevenue = monthlyRoomRevenue + monthlyCleaningRevenue;
+            const airbnbFees = totalMonthlyRevenue * (hostingFee / 100);
+            const netMonthlyRevenue = totalMonthlyRevenue - airbnbFees;
+
+            // Calculate recurring costs per month
+            const monthlyRecurringCosts = (cleaningCost + consumables + perStayMisc1 + perStayMisc2) * staysPerMonth;
+            const totalRecurringCosts = cleaningCost + consumables + perStayMisc1 + perStayMisc2;
+            const totalAnnualRecurring = monthlyRecurringCosts * 12;
+
+            // Calculate profit
+            const monthlyProfit = netMonthlyRevenue - totalMonthlyOperating - monthlyRecurringCosts;
+            const annualProfit = monthlyProfit * 12;
+            const firstYearProfit = annualProfit - totalStartup;
+
+            // Calculate break-even
+            const breakEvenMonths = totalStartup > 0 ? totalStartup / monthlyProfit : 0;
+
+            // Calculate buyer rating based on monthly profit thresholds
+            let buyerRating;
+            if (monthlyProfit >= 3000) {
+                buyerRating = "Excellent";
+            } else if (monthlyProfit >= 2000) {
+                buyerRating = "Good";
+            } else if (monthlyProfit >= 1000) {
+                buyerRating = "Okay";
+            } else if (monthlyProfit >= 0) {
+                buyerRating = "Bad";
+            } else {
+                buyerRating = "Horrible";
+            }
+
+            // Update display
+            document.getElementById('total-startup').textContent = formatNumber(totalStartup);
+            document.getElementById('total-monthly-operating').textContent = formatNumber(totalMonthlyOperating);
+            document.getElementById('total-annual-operating').textContent = formatNumber(totalAnnualOperating);
+
+            // Annual operating costs
+            document.getElementById('annual-rent').textContent = formatNumber(monthlyRent * 12);
+            document.getElementById('annual-utilities').textContent = formatNumber(utilities * 12);
+            document.getElementById('annual-internet').textContent = formatNumber(internet * 12);
+            document.getElementById('annual-parking').textContent = formatNumber(parkingMonthly * 12);
+            document.getElementById('annual-insurance').textContent = formatNumber(insurance * 12);
+            document.getElementById('annual-software').textContent = formatNumber(softwareMonthly * 12);
+            document.getElementById('annual-landscape').textContent = formatNumber(landscapeMonthly * 12);
+            document.getElementById('annual-misc1').textContent = formatNumber(misc1Monthly * 12);
+
+            // Recurring costs
+            document.getElementById('total-recurring').textContent = formatNumber(totalRecurringCosts);
+            document.getElementById('total-annual-recurring').textContent = formatNumber(totalAnnualRecurring);
+            document.getElementById('annual-cleaning').textContent = formatNumber(cleaningCost * staysPerMonth * 12);
+            document.getElementById('annual-consumables').textContent = formatNumber(consumables * staysPerMonth * 12);
+            document.getElementById('annual-per-stay-misc1').textContent = formatNumber(perStayMisc1 * staysPerMonth * 12);
+            document.getElementById('annual-per-stay-misc2').textContent = formatNumber(perStayMisc2 * staysPerMonth * 12);
+
+            // Revenue assumptions (annual)
+            document.getElementById('annual-days-rented').textContent = formatNumber(daysRented * 12);
+            document.getElementById('annual-nights-per-stay').textContent = nightsPerStay;
+            document.getElementById('annual-hosting-fee').textContent = hostingFee.toFixed(2);
+            document.getElementById('annual-cleaning-fee-charged').textContent = formatNumber(cleaningFeeCharged);
+            document.getElementById('annual-adr').textContent = formatNumber(adr);
+
+            // Financial summary
+            document.getElementById('break-even-months').textContent = breakEvenMonths > 0 ? breakEvenMonths.toFixed(1) : 'N/A';
+            document.getElementById('monthly-profit').textContent = formatNumber(monthlyProfit);
+            document.getElementById('first-year-profit').textContent = formatNumber(firstYearProfit);
+            document.getElementById('annual-profit').textContent = formatNumber(annualProfit);
+            document.getElementById('buyer-rating').textContent = buyerRating;
+        }
+
+        // Initialize calculations
+        calculate();
+    </script>
+</body>
+</html>
