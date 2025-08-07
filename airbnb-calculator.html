@@ -23,6 +23,38 @@
             color: #2c3e50;
             margin-bottom: 30px;
         }
+        .property-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #6c757d;
+        }
+        .property-info h2 {
+            margin-top: 0;
+            color: #495057;
+            text-align: center;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .info-field {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-field label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        .info-field input {
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
         .container {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -116,6 +148,52 @@
 <body>
     <div class="calculator">
         <h1>HPH Airbnb Profit Calculator</h1>
+        
+        <!-- Property Information Section -->
+        <div class="property-info">
+            <h2>Property & Contact Information</h2>
+            <div class="info-grid">
+                <div class="info-field">
+                    <label for="property-street">Property Address (Street)</label>
+                    <input type="text" id="property-street" placeholder="123 Main Street">
+                </div>
+                <div class="info-field">
+                    <label for="property-city">City</label>
+                    <input type="text" id="property-city" placeholder="Nashville">
+                </div>
+                <div class="info-field">
+                    <label for="property-state">State</label>
+                    <input type="text" id="property-state" placeholder="TN">
+                </div>
+                <div class="info-field">
+                    <label for="property-zip">ZIP Code</label>
+                    <input type="text" id="property-zip" placeholder="37201">
+                </div>
+                <div class="info-field">
+                    <label for="landlord-name">Landlord Name</label>
+                    <input type="text" id="landlord-name" placeholder="John Doe">
+                </div>
+                <div class="info-field">
+                    <label for="landlord-phone">Landlord Phone</label>
+                    <input type="text" id="landlord-phone" placeholder="(615) 555-0123">
+                </div>
+                <div class="info-field">
+                    <label for="landlord-email">Landlord Email</label>
+                    <input type="email" id="landlord-email" placeholder="landlord@email.com">
+                </div>
+                <div class="info-field">
+                    <label for="analysis-date">Analysis Date</label>
+                    <input type="date" id="analysis-date">
+                </div>
+            </div>
+        </div>
+
+        <!-- Clear All Button -->
+        <div style="text-align: center; margin: 20px 0;">
+            <button onclick="clearAll()" style="padding: 12px 24px; background-color: #dc3545; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+                🗑️ Clear All Fields
+            </button>
+        </div>
         
         <div class="container">
             <!-- Start Up Costs -->
@@ -402,6 +480,54 @@
     </div>
 
     <script>
+        // Set today's date as default
+        document.getElementById('analysis-date').value = new Date().toISOString().split('T')[0];
+
+        function clearAll() {
+            // Clear property information
+            document.getElementById('property-street').value = '';
+            document.getElementById('property-city').value = '';
+            document.getElementById('property-state').value = '';
+            document.getElementById('property-zip').value = '';
+            document.getElementById('landlord-name').value = '';
+            document.getElementById('landlord-phone').value = '';
+            document.getElementById('landlord-email').value = '';
+            document.getElementById('analysis-date').value = new Date().toISOString().split('T')[0];
+
+            // Clear all numeric inputs
+            document.getElementById('security-deposit').value = '';
+            document.getElementById('first-rent').value = '';
+            document.getElementById('furniture').value = '';
+            document.getElementById('appliances').value = '';
+            document.getElementById('patio').value = '';
+            document.getElementById('misc3').value = '';
+            document.getElementById('misc4').value = '';
+            document.getElementById('misc5').value = '';
+            
+            document.getElementById('monthly-rent').value = '';
+            document.getElementById('utilities').value = '';
+            document.getElementById('internet').value = '';
+            document.getElementById('parking-monthly').value = '';
+            document.getElementById('insurance').value = '';
+            document.getElementById('software-monthly').value = '';
+            document.getElementById('landscape-monthly').value = '';
+            document.getElementById('misc1-monthly').value = '';
+            
+            document.getElementById('cleaning-cost').value = '';
+            document.getElementById('consumables').value = '';
+            document.getElementById('per-stay-misc1').value = '';
+            document.getElementById('per-stay-misc2').value = '';
+            
+            document.getElementById('days-rented').value = '';
+            document.getElementById('nights-per-stay').value = '';
+            document.getElementById('hosting-fee').value = '';
+            document.getElementById('cleaning-fee-charged').value = '';
+            document.getElementById('adr').value = '';
+
+            // Recalculate with cleared values
+            calculate();
+        }
+
         function formatNumber(num) {
             return Math.round(num).toLocaleString();
         }
